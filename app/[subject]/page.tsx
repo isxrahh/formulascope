@@ -11,21 +11,21 @@ export default async function SubjectPage({ params }: Props) {
 
   const supabase = await createClient();
 
-  const { data: subject } = await supabase
+  const { data: subject, error: subjectError } = await supabase
     .from("subjects")
     .select("*")
     .eq("slug", subjectSlug)
     .single();
-
+  if (subjectError) throw subjectError;
   if (!subject) {
     notFound();
   }
-  const { data: chapters } = await supabase
+  const { data: chapters, error: chaptersError } = await supabase
     .from("chapters")
     .select("*")
     .eq("subject_id", subject.id)
     .order("chapter_order");
-
+  if (chaptersError) throw chaptersError;
   return (
     <main className="min-h-screen p-10">
       <h1 className="text-5xl font-bold mb-10">{subject.name}</h1>
