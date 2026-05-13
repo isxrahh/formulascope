@@ -27,7 +27,9 @@ export default async function SubjectPage({ params }: Props) {
   }
 
   const subjectConfig = subjects.find((s) => s.slug === subject.slug);
-
+if (!subjectConfig) {
+   notFound();
+  }
   const { data: chapters } = await supabase
     .from("chapters")
     .select("*")
@@ -39,9 +41,9 @@ export default async function SubjectPage({ params }: Props) {
       <SubjectHero
         title={subject.name}
         description={
-          subjectConfig?.description || "Study material and revision."
+          subjectConfig.description || "Study material and revision."
         }
-        glowClass={subjectConfig?.theme.glow}
+        glowClass={subjectConfig.theme.glow}
       />
 
       <div className="mt-10">
@@ -63,7 +65,7 @@ export default async function SubjectPage({ params }: Props) {
             slug={chapter.slug}
             subjectSlug={subject.slug}
             description={chapter.description}
-            theme={subjectConfig!.theme}
+            theme={subjectConfig.theme}
           />
         ))}
       </div>

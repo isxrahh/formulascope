@@ -56,40 +56,38 @@ export default async function ChapterPage({ params }: Props) {
       <p className="text-gray-500 mb-10">{subject.name}</p>
 
       <div className="space-y-6">
-  {content?.map((item) => {
-    let CardComponent;
+        {content?.map((item) => {
+          let CardComponent:
+            | typeof FormulaCard
+            | typeof RevisionCard
+            | typeof NoteCard;
 
-    switch (item.type) {
-      case "formula":
-        CardComponent = FormulaCard;
-        break;
+          switch (item.type) {
+            case "formula":
+              CardComponent = FormulaCard;
+              break;
 
-      case "revision":
-        CardComponent = RevisionCard;
-        break;
+            case "revision":
+              CardComponent = RevisionCard;
+              break;
 
-      default:
-        CardComponent = NoteCard;
-    }
+            default:
+              CardComponent = NoteCard;
+          }
 
-    return (
-      <CardComponent
-        key={item.id}
-        title={item.title}
-      >
-        <article className="prose prose-invert max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkMath]}
-            rehypePlugins={[rehypeKatex]}
-            
-          >
-            {item.content}
-          </ReactMarkdown>
-        </article>
-      </CardComponent>
-    );
-  })}
-</div>
+          return (
+            <CardComponent key={item.id} title={item.title}>
+              <article className="prose prose-invert max-w-none">
+                <ReactMarkdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}>
+                  {item.content}
+                </ReactMarkdown>
+              </article>
+            </CardComponent>
+          );
+        })}
+      </div>
     </main>
   );
 }
