@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/server";
 import { notFound } from "next/navigation";
+
+import SubjectHero from "@/components/study/SubjectHero";
+import { subjects } from "@/lib/subjects";
+import ChapterCard from "@/components/study/ChapterCard";
+
 interface Props {
   params: Promise<{
     subject: string;
@@ -20,6 +25,9 @@ export default async function SubjectPage({ params }: Props) {
   if (!subject) {
     notFound();
   }
+
+  const subjectConfig = subjects.find((s) => s.slug === subject.slug);
+
   const { data: chapters } = await supabase
     .from("chapters")
     .select("*")
@@ -28,14 +36,35 @@ export default async function SubjectPage({ params }: Props) {
 
   return (
     <main className="min-h-screen p-10">
-      <h1 className="text-5xl font-bold mb-10">{subject.name}</h1>
+      <SubjectHero
+        title={subject.name}
+        description={
+          subjectConfig?.description || "Study material and revision."
+        }
+        glowClass={subjectConfig?.theme.glow}
+      />
 
-      <div className="grid gap-4">
-        {chapters?.map((chapter) => (
-          <div key={chapter.id} className="border rounded-2xl p-5">
-            <h2 className="text-3xl font-semibold">{chapter.title}</h2>
-            <p className="text-gray-500">{chapter.slug}</p>
+      <div className="mt-10">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold text-zinc-100">Chapters</h2>
+            <p className="mt-1 text-zinc-500">
+              Explore concepts and revision material.
+            </p>
           </div>
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {chapters?.map((chapter) => (
+          <ChapterCard
+            key={chapter.id}
+            title={chapter.title}
+            slug={chapter.slug}
+            subjectSlug={subject.slug}
+            description={chapter.description}
+            theme={subjectConfig!.theme}
+          />
         ))}
       </div>
     </main>

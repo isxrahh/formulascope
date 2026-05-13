@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen p-10">
       <h1 className="text-4xl font-bold mb-8">
-        Study Vault
+        Formula Scope
       </h1>
 
       <div className="space-y-4">
