@@ -15,7 +15,7 @@ export default function NoteCard({ title, children }: Props) {
       </CardHeader>
 
       <CardContent>
-        <div className="prose prose-invert max-w-none text-lg">{children}</div>
+        <div className="prose prose-invert max-w-none text-lg text-white/80">{children}</div>
       </CardContent>
     </Card>
   );

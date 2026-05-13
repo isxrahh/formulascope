@@ -54,6 +54,7 @@ export default function ChapterCard({
 
           <div className="mt-8 flex items-center gap-3">
              <div className={`rounded-full border ${theme.border} ${theme.badge} px-4 py-1.5 text-xs`}>
+              Open Workspace
             </div>
           </div>
         </div>
