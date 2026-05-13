@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -30,13 +30,18 @@ export default function CommandMenu() {
 
   React.useEffect(() => {
     async function fetchSearch() {
-      const res = await fetch("/api/search");
-
-      const data = await res.json();
-
-      setSearchData(data);
+      try {
+        const res = await fetch("/api/search");
+        if (!res.ok) {
+          setSearchData([]);
+          return;
+        }
+        const data = await res.json();
+        setSearchData(Array.isArray(data) ? data : []);
+      } catch {
+        setSearchData([]);
+      }
     }
-
     fetchSearch();
   }, []);
 
@@ -68,6 +73,7 @@ export default function CommandMenu() {
     <>
       {/* Trigger */}
       <button
+      type="button"
         onClick={() => setOpen(true)}
         className=" flex w-72 items-center justify-between rounded-2xl border border-white/10 bg-white/3 px-4 py-2.5 text-sm text-zinc-500 transition-all duration-200 hover:bg-white/5">
         <span>Search formulas, chapters...</span>
@@ -114,7 +120,7 @@ export default function CommandMenu() {
                   <Command className="bg-transparent">
                     <CommandInput
                       placeholder="Search formulas, concepts, chapters..."
-                      className=" h-14 max-w-ful border-b border-white/10 bg-zinc-950/90 text-zinc-100 placeholder:text-zinc-500"
+                      className=" h-14 max-w-full border-b border-white/10 bg-zinc-950/90 text-zinc-100 placeholder:text-zinc-500"
                     />
 
                     <CommandList className="max-h-100 overflow-y-auto p-2">
