@@ -8,9 +8,9 @@ interface Props {
 
 export default function FormulaCard({ title, children }: Props) {
   return (
-    <Card className="border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl">
+    <Card className="border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl py-8">
       <CardHeader>
-        <CardTitle className="text-cyan-300">Formula</CardTitle>
+        <CardTitle className="text-cyan-300 mb-4 tracking-widest uppercase text-sm">Formula</CardTitle>
         <p className="text-xl font-semibold text-zinc-100">{title}</p>
       </CardHeader>
 

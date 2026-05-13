@@ -130,37 +130,27 @@
   }
 }
 
-.prose {
+.dark .prose {
   color: rgb(228 228 231);
 }
-
-.katex {
+.dark .prose p,
+.dark .prose li,
+.dark .prose strong,
+.dark .prose em,
+.dark .prose code,
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
+  color: rgb(228 228 231);
+}
+.dark .katex,
+.dark .katex-display {
   color: rgb(244 244 245) !important;
 }
-
-.katex-display {
-  color: rgb(244 244 245) !important;
-}
-
-.prose {
-  color: rgb(228 228 231);
-}
-
-.prose p,
-.prose li,
-.prose strong,
-.prose em,
-.prose code,
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
-  color: rgb(228 228 231);
-}
-
-.prose .katex,
-.prose .katex-display,
-.prose .katex * {
+.dark .prose .katex,
+.dark .prose .katex-display,
+.dark .prose .katex * {
   color: rgb(244 244 245) !important;
 }
 

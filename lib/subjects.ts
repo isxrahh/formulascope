@@ -4,6 +4,7 @@ import {
   Sigma,
   Flower2,
   Palette,
+  FlaskConicalIcon,
 } from "lucide-react";
 
 export const subjects = [
@@ -27,7 +28,7 @@ export const subjects = [
   {
     name: "Chemistry",
     slug: "chemistry",
-    icon: FlaskConical,
+    icon: FlaskConicalIcon,
 
     theme: {
       text: "text-emerald-300",

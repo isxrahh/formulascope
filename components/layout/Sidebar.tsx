@@ -18,7 +18,7 @@ export default function Sidebar() {
         <Image
           src="/logo.png"
           width={240}
-          height={20}
+          height={31}
           alt="FORMULASCOPE"></Image>
 
         <p className="mt-4 text-sm text-zinc-500">
@@ -40,7 +40,7 @@ export default function Sidebar() {
                 className={`group flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 
                 ${isActive ? "bg-white/10" : "hover:bg-white/5"}
                 `}>
-                <Icon className={`h-5 w-5 ${subject.color}`} />
+                <Icon className={`h-5 w-5 ${subject.theme.text}`} />
                 <span className="text-sm font-medium text-zinc-200">
                   {subject.name}
                 </span>

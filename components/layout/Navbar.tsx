@@ -14,7 +14,7 @@ export default function Navbar() {
         </div>
         <div className="w-84">
           <div className="flex gap-3 justify-center items-center cursor-pointer">
-            <Search className="text-zinc-300"/>
+            <Search className="size-5 text-zinc-300"/>
             <Input
               placeholder="Search formulas, concepts..."
               className="border-white/10 bg-white/5 text-zinc-100 placeholder:text-zinc-500"

@@ -57,7 +57,7 @@ export default async function ChapterPage({ params }: Props) {
 
       <div className="space-y-6">
   {content?.map((item) => {
-    let CardComponent;
+    let CardComponent: typeof FormulaCard | typeof RevisionCard | typeof NoteCard;
 
     switch (item.type) {
       case "formula":
