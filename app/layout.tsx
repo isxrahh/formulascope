@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppShell from "@/components/layout/AppShell";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,11 +23,16 @@ export const metadata: Metadata = {
   description: "Your personal vault for studies",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+
+  const pathname = headersList.get("x-current-path") || "";
+
+  const isAdmin = pathname.startsWith("/admin");
   return (
     <html
       lang="en"
@@ -41,7 +47,7 @@ export default function RootLayout({
       )}>
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
-          <AppShell>{children}</AppShell>
+          {isAdmin ? children : <AppShell>{children}</AppShell>}
         </TooltipProvider>
       </body>
     </html>

@@ -1,7 +1,10 @@
 @import "katex/dist/katex.min.css";
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+@tailwind utilities;
 
 @custom-variant dark (&:is(.dark *));
 
@@ -130,29 +133,7 @@
   }
 }
 
-.dark .prose {
-  color: rgb(228 228 231);
-}
-.dark .prose p,
-.dark .prose li,
-.dark .prose strong,
-.dark .prose em,
-.dark .prose code,
-.dark .prose h1,
-.dark .prose h2,
-.dark .prose h3,
-.dark .prose h4 {
-  color: rgb(228 228 231);
-}
-.dark .katex,
-.dark .katex-display {
-  color: rgb(244 244 245) !important;
-}
-.dark .prose .katex,
-.dark .prose .katex-display,
-.dark .prose .katex * {
-  color: rgb(244 244 245) !important;
-}
+
 
 html {
   scroll-behavior: smooth;
