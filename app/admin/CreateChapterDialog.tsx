@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 
 import { createClient } from "@/lib/client";
+import { toast } from "sonner";
 
 interface Subject {
   id: string;
@@ -64,8 +65,7 @@ export default function CreateChapterDialog({ subjects }: Props) {
     setLoading(false);
 
     if (error) {
-      alert(error.message);
-
+      toast.error(error.message);
       return;
     }
 
@@ -80,7 +80,9 @@ export default function CreateChapterDialog({ subjects }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button onClick={() => setOpen(true)} className="rounded-2xl mb-6 px-5 py-2.5">
+      <Button
+        onClick={() => setOpen(true)}
+        className="rounded-2xl mb-6 px-5 py-2.5">
         New Chapter
       </Button>
 

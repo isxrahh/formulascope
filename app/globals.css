@@ -1,8 +1,9 @@
 @import "katex/dist/katex.min.css";
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+@plugin "@tailwindcss/typography";
 
 @tailwind utilities;
 

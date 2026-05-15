@@ -11,7 +11,7 @@ type Chapter = {
 };
 
 export default function ChaptersPage() {
-  const supabase = createClient();
+  const supabase = React.useMemo(() => createClient(), []);
 
   const [chapters, setChapters] = React.useState<Chapter[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -20,24 +20,21 @@ export default function ChaptersPage() {
   const [editTitle, setEditTitle] = React.useState("");
 
   // Fetch chapters
-  async function fetchChapters() {
+  const fetchChapters = React.useCallback(async () => {
     setLoading(true);
-
     const { data, error } = await supabase.from("chapters").select("*");
-
-    console.log({ data, error });
-    if (!error && data) {
-      setChapters(data);
+    if (error) {
+      alert(error.message);
+      setLoading(false);
+      return;
     }
-
+    setChapters(data ?? []);
     setLoading(false);
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-  }
+  }, [supabase]);
 
   React.useEffect(() => {
-    fetchChapters();
-  }, []);
+    void fetchChapters();
+  }, [fetchChapters]);
 
   // Delete chapter
   async function handleDelete(id: string) {
@@ -46,9 +43,11 @@ export default function ChaptersPage() {
 
     const { error } = await supabase.from("chapters").delete().eq("id", id);
 
-    if (!error) {
-      setChapters((prev) => prev.filter((c) => c.id !== id));
+    if (error) {
+      alert(error.message);
+      return;
     }
+    setChapters((prev) => prev.filter((c) => c.id !== id));
   }
 
   // Open edit modal
@@ -61,18 +60,29 @@ export default function ChaptersPage() {
   async function handleUpdate() {
     if (!editing) return;
 
+    const normalizedTitle = editTitle.trim();
+    if (!normalizedTitle) return;
+    const normalizedSlug = normalizedTitle
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    if (!normalizedSlug) return;
     const { error } = await supabase
       .from("chapters")
       .update({
-        title: editTitle,
-        slug: editTitle.toLowerCase().replace(/\s+/g, "-"),
+        title: normalizedTitle,
+        slug: normalizedSlug,
       })
       .eq("id", editing.id);
 
-    if (!error) {
-      setEditing(null);
-      fetchChapters();
+    if (error) {
+      alert(error.message);
+      return;
     }
+    setEditing(null);
+    void fetchChapters();
   }
 
   return (

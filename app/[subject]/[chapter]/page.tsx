@@ -16,59 +16,54 @@ interface Props {
   }>;
 }
 
-export default async function ChapterPage({
-  params,
-}: Props) {
-  const {
-    subject: subjectSlug,
-    chapter: chapterSlug,
-  } = await params;
+export default async function ChapterPage({ params }: Props) {
+  const { subject: subjectSlug, chapter: chapterSlug } = await params;
 
   const supabase = await createClient();
 
   // SUBJECT
-  const { data: subject } =
-    await supabase
-      .from("subjects")
-      .select("*")
-      .eq("slug", subjectSlug)
-      .single();
+  const { data: subject } = await supabase
+    .from("subjects")
+    .select("*")
+    .eq("slug", subjectSlug)
+    .single();
 
   if (!subject) {
     notFound();
   }
 
   // CHAPTER
-  const { data: chapter } =
-    await supabase
-      .from("chapters")
-      .select("*")
-      .eq("slug", chapterSlug)
-      .eq("subject_id", subject.id)
-      .single();
+  const { data: chapter } = await supabase
+    .from("chapters")
+    .select("*")
+    .eq("slug", chapterSlug)
+    .eq("subject_id", subject.id)
+    .single();
 
   if (!chapter) {
     notFound();
   }
 
   // CONTENT
-  const { data: content } =
-    await supabase
-      .from("content")
-      .select("*")
-      .eq("chapter_id", chapter.id);
+  const { data: content } = await supabase
+    .from("content")
+    .select("*")
+    .order("id", { ascending: true });
+
+  const toAnchorId = (title: string, unique: string | number) =>
+    `${title
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")}-${unique}`;
 
   return (
     <main className="min-h-screen p-10">
       {/* HEADER */}
       <div className="mb-12">
-        <h1 className="mb-3 text-5xl font-bold text-white">
-          {chapter.title}
-        </h1>
+        <h1 className="mb-3 text-5xl font-bold text-white">{chapter.title}</h1>
 
-        <p className="text-zinc-500">
-          {subject.name}
-        </p>
+        <p className="text-zinc-500">{subject.name}</p>
       </div>
 
       {/* LAYOUT */}
@@ -83,52 +78,24 @@ export default async function ChapterPage({
 
             switch (item.type) {
               case "formula":
-                CardComponent =
-                  FormulaCard;
+                CardComponent = FormulaCard;
                 break;
 
               case "revision":
-                CardComponent =
-                  RevisionCard;
+                CardComponent = RevisionCard;
                 break;
 
               default:
-                CardComponent =
-                  NoteCard;
+                CardComponent = NoteCard;
             }
 
             return (
-              <div
-                key={item.id}
-                id={item.title
-                  .toLowerCase()
-                  .replace(/\s+/g, "-")}
-              >
-                <CardComponent
-                  title={item.title}
-                >
-                  <article
-                    className="
-                      prose prose-invert
-                      max-w-none
-
-                      prose-headings:text-white
-                      prose-p:text-zinc-200
-                      prose-li:text-zinc-300
-                      prose-strong:text-white
-
-                      [&_.katex-display]:overflow-x-auto
-                      [&_.katex-display]:py-4
-                    "
-                  >
+              <div key={item.id} id={toAnchorId(item.title, item.id)}>
+                <CardComponent title={item.title}>
+                  <article className=" prose prose-invert max-w-none prose-headings:text-white prose-p:text-zinc-200 prose-li:text-zinc-300 prose-strong:text-white [&_.katex-display]:overflow-x-auto [&_.katex-display]:py- ">
                     <ReactMarkdown
-                      remarkPlugins={[
-                        remarkMath,
-                      ]}
-                      rehypePlugins={[
-                        rehypeKatex,
-                      ]}
-                    >
+                      remarkPlugins={[remarkMath]}
+                      rehypePlugins={[rehypeKatex]}>
                       {item.content}
                     </ReactMarkdown>
                   </article>
@@ -140,25 +107,8 @@ export default async function ChapterPage({
 
         {/* TOC */}
         <div className="hidden lg:block">
-          <div
-            className="
-              sticky top-10
-
-              rounded-3xl
-              border border-white/10
-              bg-zinc-950/80
-
-              p-6
-            "
-          >
-            <h3
-              className="
-                mb-5 text-sm
-                font-semibold uppercase
-                tracking-[0.2em]
-                text-zinc-500
-              "
-            >
+          <div className=" sticky top-10 rounded-3xl border border-white/10 bg-zinc-950/80 p-6">
+            <h3 className=" mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-50">
               On This Page
             </h3>
 
@@ -166,24 +116,8 @@ export default async function ChapterPage({
               {content?.map((item) => (
                 <a
                   key={item.id}
-                  href={`#${item.title
-                    .toLowerCase()
-                    .replace(
-                      /\s+/g,
-                      "-"
-                    )}`}
-                  className="
-                    block rounded-xl
-                    px-3 py-2
-
-                    text-sm text-zinc-400
-
-                    transition-all duration-200
-
-                    hover:bg-white/3
-                    hover:text-white
-                  "
-                >
+                  href={`#${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                  className=" block rounded-xl px-3 py-2 text-sm text-zinc-400 transition-all duration-200 hover:bg-white/3 hover:text-white">
                   {item.title}
                 </a>
               ))}

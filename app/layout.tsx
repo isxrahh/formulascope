@@ -29,10 +29,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
+  const pathname = headersList.get("x-current-path");
+  if (!pathname) {
+    console.warn(
+      "x-current-path header missing - middleware may not be configured",
+    );
+  }
 
-  const pathname = headersList.get("x-current-path") || "";
-
-  const isAdmin = pathname.startsWith("/admin");
+  const isAdmin = pathname?.startsWith("/admin") ?? false;
   return (
     <html
       lang="en"
