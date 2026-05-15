@@ -17,21 +17,14 @@ interface Props {
   };
 }
 
-export default function Sidebar({
-  subjectTheme,
-}: Props) {
+export default function Sidebar({ subjectTheme }: Props) {
   const pathname = usePathname();
 
   return (
     <aside className="hidden md:flex w-72 flex-col border-r border-white/10 bg-zinc-950/80 backdrop-blur-xl">
       {/* Logo */}
       <div className="px-6 py-8">
-        <Image
-          src="/logo.png"
-          width={240}
-          height={31}
-          alt="FORMULASCOPE"
-        />
+        <Image src="/logo.png" width={240} height={31} alt="FORMULASCOPE" />
 
         <p className="mt-4 text-sm text-zinc-500">
           Your personal academic system
@@ -47,7 +40,8 @@ export default function Sidebar({
             const Icon = item.icon;
 
             const isActive =
-              pathname === `/${item.slug}`;
+              pathname === `/${item.slug}` ||
+              pathname.startsWith(`/${item.slug}/`);
 
             return (
               <Link
@@ -62,11 +56,8 @@ export default function Sidebar({
                   backgroundColor: isActive
                     ? "rgba(255,255,255,0.08)"
                     : undefined,
-                }}
-              >
-                <Icon
-                  className={`h-5 w-5 ${item.theme.text}`}
-                />
+                }}>
+                <Icon className={`h-5 w-5 ${item.theme.text}`} />
 
                 <span className="text-sm font-medium text-zinc-200">
                   {item.name}
